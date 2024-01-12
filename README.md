@@ -1,70 +1,49 @@
-# Getting Started with Create React App
+# Creating Invoice App
+Task is to create a billing and invoice automation platform for SaaS customers. Users should
+be able to log in using Google OAuth, view their usage details, and access billing and invoice information.
+Additionally, the platform should automate billing based on usage data using zapier.com.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Requirements:
+### Backend Microservice (Node.js):
+   #### Implement a Node.js backend microservice that provides the following API endpoints:
+    - User authentication: Enable users to log in using Google OAuth.
+    - Usage details: Allow users to view their SaaS usage details, including relevant metrics.
+    - Billing information: Provide billing details based on usage, including the current billing cycle and cumulative usage.
+    - Invoice generation: Implement an endpoint to generate invoices for cumulative usage.
+    - Integrate with zapier.com to automate billing processes. Set up workflows to trigger billing actions based on SaaS usage metrics.
+### Frontend (React):
+   #### Develop a React frontend that includes the following features:
+    - Google OAuth integration: Implement a user interface for users to log in using their Google accounts. 
+    - Usage details: Display the SaaS usage details, including relevant metrics.
+    - Billing information: Show the current billing cycle details and cumulative usage for the user.
+    - Invoice generation: Provide a button or option for users to generate their invoices.
 
-In the project directory, you can run:
+To run the project in your local system Follow below Instructions:
+
+## Front End
+
+In the invoiceapp directory, you can run:
+
+### `npm install or npm i`
+To install dependencies 
 
 ### `npm start`
 
-Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Backend
 
-### `npm test`
+In the invoiceapp/Backend directory, you can run:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### `npm install or npm i`
+To install dependencies 
 
-### `npm run build`
+### `npm start`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Open [http://localhost:5000](http://localhost:5000) to run backend server.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
