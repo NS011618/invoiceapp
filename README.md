@@ -19,6 +19,17 @@ Additionally, the platform should automate billing based on usage data using zap
     - Billing information: Show the current billing cycle details and cumulative usage for the user.
     - Invoice generation: Provide a button or option for users to generate their invoices.
 
+## Implemented:
+### Backend (Node.js):
+   #### Implement a Node.js backend microservice that provides the following API endpoints:
+    - User authentication: Enable users to log in using Google OAuth.
+    
+### Frontend (React):
+   #### Develop a React frontend that includes the following features:
+    - Google OAuth integration: Implement a user interface for users to log in using their Google accounts. 
+    
+
+
 To run the project in your local system Follow below Instructions:
 
 ## Front End
