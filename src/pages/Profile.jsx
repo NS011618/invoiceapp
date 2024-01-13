@@ -1,13 +1,13 @@
 // Profile.jsx
-import React from 'react';
-import { Link } from 'react-router-dom'
+import React from "react";
+import { Link } from "react-router-dom";
 
 function Profile({ user }) {
   if (!user) {
     return <p>Loading...</p>;
   }
 
-  const displayName = user?.displayName || 'Unknown User';
+  const displayName = user?.displayName || "Unknown User";
 
   return (
     <div>
@@ -17,7 +17,6 @@ function Profile({ user }) {
 
       {/* SaaS usage details */}
       <Link to="/saasusage">SaaS Usage Details</Link>
-      
     </div>
   );
 }

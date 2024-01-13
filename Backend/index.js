@@ -1,56 +1,57 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const session = require('express-session');
-const cors = require('cors');
+const express = require("express");
+const mongoose = require("mongoose");
+const passport = require("passport");
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const session = require("express-session");
+const cors = require("cors");
 const app = express();
 
 // Replace 'YOUR_GOOGLE_CLIENT_ID' and 'YOUR_GOOGLE_CLIENT_SECRET' with your actual values.
-const GOOGLE_CLIENT_ID = '599000675886-mlev0o0kg0p0l5g6g9mhb2kc3vgss5c7.apps.googleusercontent.com';
-const GOOGLE_CLIENT_SECRET = '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';
+const GOOGLE_CLIENT_ID =
+  "599000675886-mlev0o0kg0p0l5g6g9mhb2kc3vgss5c7.apps.googleusercontent.com";
+const GOOGLE_CLIENT_SECRET = "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";
 
-mongoose.connect('mongodb+srv://ashishgolla2003:NS011618@cluster0.ophbpqo.mongodb.net/invoiceapp', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect(
+  "mongodb+srv://ashishgolla2003:NS011618@cluster0.ophbpqo.mongodb.net/invoiceapp",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }
+);
 
 app.use(
   session({
-    secret:'your-secret-key',
+    secret: "your-secret-key",
     resave: false,
     saveUninitialized: false,
     cookie: { secure: false },
   })
 );
 
-const User = require('./models/userModel');
+const User = require("./models/userModel");
 
-app.use(cors({
-  origin: 'http://localhost:3000',
-  credentials: true
-}));
-
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 
 app.use(passport.initialize());
 app.use(passport.session());
-
-
 
 passport.use(
   new GoogleStrategy(
     {
       clientID: GOOGLE_CLIENT_ID,
       clientSecret: GOOGLE_CLIENT_SECRET,
-      callbackURL: 'http://localhost:5000/auth/google-callback/',
+      callbackURL: "http://localhost:5000/auth/google-callback/",
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-       
         const existingUser = await User.findOne({ googleId: profile.id });
 
         if (existingUser) {
-       
           return done(null, existingUser);
         }
 
@@ -63,10 +64,9 @@ passport.use(
 
         await newUser.save();
 
-        
         return done(null, newUser);
       } catch (error) {
-        console.error('Error in Google strategy callback:', error);
+        console.error("Error in Google strategy callback:", error);
         return done(error, null);
       }
     }
@@ -83,35 +83,30 @@ passport.deserializeUser((obj, done) => {
   done(null, obj);
 });
 
-
-
-
-app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+app.get(
+  "/auth/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
+);
 
 app.get(
-  '/auth/google-callback/',
-  passport.authenticate('google', { failureRedirect: '/' }),
+  "/auth/google-callback/",
+  passport.authenticate("google", { failureRedirect: "/" }),
   (req, res) => {
-    res.redirect('http://localhost:3000/profile');
-    console.log('Login Successful')
+    res.redirect("http://localhost:3000/profile");
+    console.log("Login Successful");
   }
 );
 
-app.get('/auth/user', (req, res) => {
+app.get("/auth/user", (req, res) => {
   // Send the authenticated user data to the client
   const user = req.user;
   res.json({ user: user });
-
-  
 });
 
-
-
-app.get('/profile', (req, res) => {
+app.get("/profile", (req, res) => {
   // Access the authenticated user via req.user
   const user = req.user;
   res.json({ user: user });
-  
 });
 
 const saasUsageData = {
@@ -121,32 +116,27 @@ const saasUsageData = {
 };
 
 // Route to fetch SaaS usage details
-app.get('/usage', (req, res) => {
+app.get("/usage", (req, res) => {
   // You might want to implement authentication and authorization checks here
-  
+
   // Return SaaS usage data
-  res.json({saasdata: saasUsageData});
-  console.log('Usage data sent successfully')
+  res.json({ saasdata: saasUsageData });
+  console.log("Usage data sent successfully");
 });
-
-
-
 
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
   }
-  res.redirect('http://localhost:3000/');
+  res.redirect("http://localhost:3000/");
 }
 
-app.get('/auth/logout', ensureAuthenticated, (req, res) => {
+app.get("/auth/logout", ensureAuthenticated, (req, res) => {
   req.logout();
-  res.json({ message: 'Logging out' });
-  
-  console.log('logged out successfully')
+  res.json({ message: "Logging out" });
 
+  console.log("logged out successfully");
 });
-
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
