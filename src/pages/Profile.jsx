@@ -1,9 +1,20 @@
-import React from 'react'
+// Profile.jsx
+import React from 'react';
 
-const Profile = () => {
+function Profile({ user }) {
+  if (!user) {
+    return <p>Loading...</p>;
+  }
+
+  const displayName = user?.displayName || 'Unknown User';
+
   return (
-    <div>Profile</div>
-  )
+    <div>
+      <h1>Profile Page</h1>
+      <p>Welcome, {displayName}!</p>
+      {/* Additional profile content */}
+    </div>
+  );
 }
 
-export default Profile
+export default Profile;

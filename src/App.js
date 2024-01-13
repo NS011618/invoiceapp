@@ -1,32 +1,36 @@
-import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
-import { Login, Profile } from "./pages";
-import { useEffect } from "react";
+import { BrowserRouter, Routes, Route, Link, NavLink } from "react-router-dom";
+import { Profile, Home } from "./pages";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import useLocalStorageState from "use-local-storage-state";
 
 function App() {
-  const [isLogin, setIsLogin] = useLocalStorageState(false);
+  const [user, setUser] = useLocalStorageState(null);
 
   useEffect(() => {
-    // Check the login status when the component mounts
-    const checkLoginStatus = () => {
-      const storedLoginStatus = localStorage.getItem("isLogin");
-      setIsLogin(storedLoginStatus === "true");
-    };
-
-    checkLoginStatus();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // Check if the user is already authenticated
+    axios.get('http://localhost:5000/auth/user')
+      .then(response => {
+        setUser(response.data);
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.error('Authentication error:', error);
+      });
   }, []);
 
   const handleLogin = () => {
-    // Handle login and update isLoggedIn state
-    localStorage.setItem("isLogin", "true");
-    setIsLogin(true);
+    window.location.href = 'http://localhost:5000/auth/google';
   };
 
-  const handleLogout = () => {
-    // Handle logout and update isLoggedIn state
-    localStorage.setItem("isLoggedIn", "false");
-    setIsLogin(false);
+  const handleLogout = async () => {
+    try {
+      await axios.get('http://localhost:5000/auth/logout');
+      setUser(null);
+      console.log('Logout successful');
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
   };
 
   return (
@@ -37,35 +41,20 @@ function App() {
             <h1 className="text-2xl font-bold p-2">Invoice App</h1>
           </div>
           <div className="flex flex-row justify-between gap-2">
-            {isLogin ? (
-              <>
-                <Link
-                  to="/profile"
-                  className="p-2 bg-slate-200 rounded-md shadow-md"
-                >
-                  Profile
-                </Link>
-                <button
-                  onClick={handleLogout}
-                  className="font-inter font-medium bg-white p-3 shadow-md  text-black px-4 py-2 rounded-md"
-                >
-                  Logout
-                </button>
-              </>
+            <NavLink to="/profile" className="p-2 bg-slate-200 rounded-md shadow-md">
+              Profile
+            </NavLink>
+            {user ? (
+              <button onClick={handleLogout}>Logout</button>
             ) : (
-              <Link to="/" className="p-2 bg-slate-200 rounded-md shadow-md">
-                Login
-              </Link>
+              <button onClick={handleLogin}>Login with Google</button>
             )}
           </div>
         </header>
 
         <Routes>
-          <Route path="/" element={<Login onLogin={handleLogin} />} />
-          <Route
-            path="/profile"
-            element={isLogin ? <Profile /> : <Navigate to="/" />}
-          />
+          <Route path="/" element={<Home />} />
+          <Route path="/profile" element={<Profile user={user} />} />
         </Routes>
       </BrowserRouter>
     </div>
