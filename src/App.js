@@ -1,18 +1,21 @@
-import { BrowserRouter, Routes, Route, Link, NavLink } from "react-router-dom";
+import { BrowserRouter, Routes, Route, NavLink } from "react-router-dom";
 import { Profile, Home } from "./pages";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import useLocalStorageState from "use-local-storage-state";
 
 function App() {
   const [user, setUser] = useLocalStorageState(null);
 
+  
   useEffect(() => {
     // Check if the user is already authenticated
-    axios.get('http://localhost:5000/auth/user')
+    axios.get('http://localhost:5000/auth/user',{
+      withCredentials: true,
+    })
       .then(response => {
-        setUser(response.data);
-        console.log(response.data);
+        setUser(response.data.user);
+        console.log('User:', response.data.user);
       })
       .catch(error => {
         console.error('Authentication error:', error);
@@ -26,7 +29,7 @@ function App() {
   const handleLogout = async () => {
     try {
       await axios.get('http://localhost:5000/auth/logout');
-      setUser(null);
+      setUser(null);     
       console.log('Logout successful');
     } catch (error) {
       console.error('Logout error:', error);

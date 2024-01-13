@@ -24,7 +24,12 @@ app.use(
   })
 );
 
-app.use(cors());
+const User = require('./models/userModel');
+
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true
+}));
 
 
 app.use(passport.initialize());
@@ -39,9 +44,31 @@ passport.use(
       clientSecret: GOOGLE_CLIENT_SECRET,
       callbackURL: 'http://localhost:5000/auth/google-callback/',
     },
-    (accessToken, refreshToken, profile, done) => {
-      // Handle user creation or retrieval here
-      return done(null, profile);
+    async (accessToken, refreshToken, profile, done) => {
+      try {
+       
+        const existingUser = await User.findOne({ googleId: profile.id });
+
+        if (existingUser) {
+       
+          return done(null, existingUser);
+        }
+
+        const newUser = new User({
+          googleId: profile.id,
+          displayName: profile.displayName,
+          email: profile.emails[0].value,
+          // Add other fields as needed
+        });
+
+        await newUser.save();
+
+        
+        return done(null, newUser);
+      } catch (error) {
+        console.error('Error in Google strategy callback:', error);
+        return done(error, null);
+      }
     }
   )
 );
@@ -66,14 +93,15 @@ app.get(
   passport.authenticate('google', { failureRedirect: '/' }),
   (req, res) => {
     res.redirect('http://localhost:3000/profile');
-    console.log('success')
+    console.log('Login Successful')
   }
 );
 
 app.get('/auth/user', (req, res) => {
   // Send the authenticated user data to the client
-  res.json({data: req.user});
-  console.log(req.user);
+  const user = req.user;
+  res.json({ user: user });
+
   
 });
 
@@ -81,8 +109,9 @@ app.get('/auth/user', (req, res) => {
 
 app.get('/profile', (req, res) => {
   // Access the authenticated user via req.user
-  res.send(req.user);
-  console.log(req.user);
+  const user = req.user;
+  res.json({ user: user });
+  
 });
 
 
@@ -98,7 +127,7 @@ app.get('/auth/logout', ensureAuthenticated, (req, res) => {
   req.logout();
   res.json({ message: 'Logging out' });
   
-  console.log('logged out')
+  console.log('logged out successfully')
 
 });
 
