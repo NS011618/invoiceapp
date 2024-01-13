@@ -114,6 +114,22 @@ app.get('/profile', (req, res) => {
   
 });
 
+const saasUsageData = {
+  totalUsers: 100,
+  storageUsage: 50,
+  // Add more details as needed
+};
+
+// Route to fetch SaaS usage details
+app.get('/usage', (req, res) => {
+  // You might want to implement authentication and authorization checks here
+  
+  // Return SaaS usage data
+  res.json({saasdata: saasUsageData});
+  console.log('Usage data sent successfully')
+});
+
+
 
 
 function ensureAuthenticated(req, res, next) {
