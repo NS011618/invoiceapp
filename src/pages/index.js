@@ -1,5 +1,5 @@
 import Profile from "./Profile";
 import Home from "./Home";
-import Saasusage from "./Saasusage";
+import Invoice from "./Invoice";
 
-export { Profile, Home, Saasusage };
+export { Profile, Home, Invoice};

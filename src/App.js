@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Routes, Route, NavLink, useNavigate } from "react-router-dom";
-import { Profile, Home, Saasusage } from "./pages";
+import { Profile, Home, Invoice } from "./pages";
 import axios from "axios";
 import { useEffect } from "react";
 import useLocalStorageState from "use-local-storage-state";
@@ -69,8 +69,8 @@ function App() {
       <Routes>
         {user && isLogin ? (
           <>
-            <Route path="/profile" element={<Profile user={user} />} />
-            <Route path="/saasusage" element={<Saasusage  user={user} />} />
+            <Route path="/profile" element={<Profile user={user} />} />  
+            <Route path="/invoice" element={<Invoice />} />"      
           </>
         ) : (
           <Route path="/" element={<Home />} />

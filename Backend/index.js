@@ -114,10 +114,18 @@ const saasUsageData = {
 };
 
 // Route to fetch SaaS usage details
-app.get("/usage", (req, res) => { 
- 
+app.get('/api/usage/:userId', async(req, res) => {
+  const userId = req.params.userId;
+  const userCount = await User.countDocuments();
+  
+  const saasUsageData = {
+    totalUsers: userCount,
+    storageUsage: 50,  
+   
+  };
   res.json({ saasdata: saasUsageData });
-  console.log("Usage data sent successfully");
+  console.log('Usage data sent successfully');
+  console.log(userId);
 });
 
 
