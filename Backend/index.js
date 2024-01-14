@@ -12,7 +12,7 @@ const cors = require("cors");
 const app = express();
 
 mongoose.connect(
-  "mongodb+srv://ashishgolla2003:NS011618@cluster0.ophbpqo.mongodb.net/invoiceapp",
+  process.env.MONGO_URI,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -107,21 +107,21 @@ app.get("/auth/user", (req, res) => {
 });
 
 
-const saasUsageData = {
-  totalUsers: 100,
-  storageUsage: 50,
-  
-};
 
 // Route to fetch SaaS usage details
 app.get('/api/usage/:userId', async(req, res) => {
   const userId = req.params.userId;
-  const userCount = await User.countDocuments();
+  const userCount = await User.countDocuments();  
   
+  const estimatedDocumentCount = await User.estimatedDocumentCount();
+
+  // Calculate size based on an average document size (adjust the value based on your schema)
+  const averageDocumentSize = 36; 
+  const collectionSize = estimatedDocumentCount * averageDocumentSize;
+
   const saasUsageData = {
     totalUsers: userCount,
-    storageUsage: 50,  
-   
+    storageUsage: collectionSize,  // Use the calculated size
   };
   res.json({ saasdata: saasUsageData });
   console.log('Usage data sent successfully');
