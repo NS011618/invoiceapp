@@ -1,6 +1,5 @@
-// Profile.jsx
 import React from "react";
-import { Link } from "react-router-dom";
+import Saasusage from "./Saasusage";
 
 function Profile({ user }) {
   if (!user) {
@@ -13,10 +12,9 @@ function Profile({ user }) {
     <div>
       <h1>Profile Page</h1>
       <p>Welcome, {displayName}!</p>
-      {/* Additional profile content */}
-
-      {/* SaaS usage details */}
-      <Link to="/saasusage">SaaS Usage Details</Link>
+      
+   
+      <Saasusage user={user} />
     </div>
   );
 }

@@ -18,8 +18,7 @@ function App() {
         withCredentials: true,
       })
       .then((response) => {
-        setUser(response.data.user);
-        console.log("User:", response.data.user);
+        setUser(response.data.user);        
       })
       .catch((error) => {
         console.error("Authentication error:", error);
@@ -50,14 +49,17 @@ function App() {
           <h1 className="text-2xl font-bold p-2">Invoice App</h1>
         </div>
         <div className="flex flex-row justify-between gap-2">
-          <NavLink
-            to="/profile"
-            className="p-2 bg-slate-200 rounded-md shadow-md"
-          >
-            Profile
-          </NavLink>
           {user && isLogin ? (
-            <button onClick={handleLogout}>Logout</button>
+            <>
+              <NavLink
+                to="/profile"
+                className="p-2 bg-slate-200 rounded-md shadow-md"
+              >
+
+                Profile
+              </NavLink>
+              <button onClick={handleLogout}>Logout</button>
+            </>
           ) : (
             <button onClick={handleLogin}>Login with Google</button>
           )}
@@ -68,7 +70,7 @@ function App() {
         {user && isLogin ? (
           <>
             <Route path="/profile" element={<Profile user={user} />} />
-            <Route path="/saasusage" element={<Saasusage />} />
+            <Route path="/saasusage" element={<Saasusage  user={user} />} />
           </>
         ) : (
           <Route path="/" element={<Home />} />

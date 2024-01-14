@@ -12,8 +12,7 @@ const Saasusage = () => {
         withCredentials: true,
       })
       .then((response) => {
-        setSaasUsageData(response.data.saasdata);
-        console.log("SaaS Usage data:", response.data.saasdata);
+        setSaasUsageData(response.data.saasdata);        
       })
       .catch((error) => {
         console.error("SaaS Usage error:", error);
